@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "171226472077",
+    "firebase_url": "https://pengingatobatcerdas-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pengingatobatcerdas",
+    "storage_bucket": "pengingatobatcerdas.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171226472077:android:79e988d33018498f5a0cc4",
+        "android_client_info": {
+          "package_name": "com.example.iot_pengingat_obat_pintar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClrkKqzYFI1Yw7nEmluromnedB5ASdpDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171226472077:android:5b8e334026c0e9d05a0cc4",
+        "android_client_info": {
+          "package_name": "com.pancingdev.pengingatobat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClrkKqzYFI1Yw7nEmluromnedB5ASdpDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

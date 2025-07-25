@@ -1,4 +1,4 @@
-package com.example.iot_pengingat_obat_pintar
+package com.pancingdev.pengingatobat
 
 import io.flutter.embedding.android.FlutterActivity
 

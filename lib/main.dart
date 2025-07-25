@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'pages/home_page.dart';
 import 'pages/info_page.dart';
 import 'pages/history_page.dart';
 import 'widgets/custom_navbar.dart';
 import 'providers/waktu_obat_provider.dart';
+import 'providers/navigation_provider.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('id_ID', null); // ✅ Wajib untuk DateFormat Indonesia
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseAuth.instance.signInAnonymously();
+  await initializeDateFormatting('id_ID', null);
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => WaktuObatProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
       ],
       child: const MyApp(),
     ),
@@ -34,20 +45,20 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         fontFamily: 'Poppins',
       ),
-      home: const MainNavigation(),
+      home: const BaseLayout(),
     );
   }
 }
 
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+class BaseLayout extends StatefulWidget {
+  const BaseLayout({super.key});
 
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
+  State<BaseLayout> createState() => _BaseLayoutState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 0;
+class _BaseLayoutState extends State<BaseLayout> {
+  final PageController _pageController = PageController();
 
   final List<Widget> _pages = const [
     HomePage(),
@@ -56,16 +67,34 @@ class _MainNavigationState extends State<MainNavigation> {
   ];
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onTabTapped(int index) {
+    Provider.of<NavigationProvider>(context, listen: false).setIndex(index);
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final currentIndex = Provider.of<NavigationProvider>(context).currentIndex;
+
     return Scaffold(
-      body: _pages[_currentIndex],
+      backgroundColor: Colors.grey[100],
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
       bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex,
-        onTabSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        currentIndex: currentIndex,
+        onTabSelected: _onTabTapped,
       ),
     );
   }
